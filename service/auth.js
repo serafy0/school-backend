@@ -72,21 +72,18 @@ async function sendTokenByEmail(email, token) {
   });
 }
 const crypto = require("crypto");
-const knex = require("knex");
-const moment = require("moment");
-const { raw } = require("objection");
 async function setPasswordChangeToken(email) {
+  const token = crypto.randomBytes(64).toString("hex");
   let date = new Date().getTime();
   date += 2 * 60 * 60 * 1000; //expires in 2 hours
   let new_date = new Date(date).toISOString();
-
-  const user = await User.query()
+  await User.query()
     .patch({
       token_expiration_date: new_date,
-      refresh_token: crypto.randomBytes(64).toString("hex"),
+      refresh_token: token,
     })
     .where("email", email);
-  return user;
+  await sendForgotPasswordEmail(email, token);
 }
 
 async function sendForgotPasswordEmail(email, token) {
@@ -94,8 +91,8 @@ async function sendForgotPasswordEmail(email, token) {
     host: "smtp.ethereal.email",
     port: 587,
     auth: {
-      user: "karine.green79@ethereal.email",
-      pass: "DHwSWVj8EuC2QZWf5f",
+      user: "darius.rosenbaum@ethereal.email",
+      pass: "yRzT9ZDKknwjxjRZQq",
     },
   });
 
