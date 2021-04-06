@@ -11,6 +11,7 @@ router.post("/login", authController.login);
 router.post("/signup", authController.signup);
 
 router.get("/verify/:token", authController.vertifyByToken);
+router.post("/forgot_password/", authController.requestNewPassword);
 router.use(authenticate);
 
 // router.get(

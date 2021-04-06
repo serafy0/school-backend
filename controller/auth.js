@@ -60,4 +60,16 @@ async function vertifyByToken(req, res) {
   }
 }
 
-module.exports = { login, signup, vertifyByToken };
+async function requestNewPassword(req, res) {
+  const { email } = req.body;
+  try {
+    await authService.setPasswordChangeToken(email);
+    res.status(200).json({ message: "email sent" });
+  } catch (err) {
+    res.status(400).json(err);
+    console.log(err);
+    console.log(email);
+  }
+}
+
+module.exports = { login, signup, vertifyByToken, requestNewPassword };

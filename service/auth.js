@@ -68,10 +68,51 @@ async function sendTokenByEmail(email, token) {
     to: email, // list of receivers
     subject: "Hello ✔", // Subject line
     text: `Hello, this is your token link ${token}`, // plain text body
-    html: `<b>Hello this is your token ${token}}</b>`, // html body
+    html: `<b>Hello this is your token ${token}</b>`, // html body
+  });
+}
+const crypto = require("crypto");
+const knex = require("knex");
+const moment = require("moment");
+const { raw } = require("objection");
+async function setPasswordChangeToken(email) {
+  let date = new Date().getTime();
+  date += 2 * 60 * 60 * 1000; //expires in 2 hours
+  let new_date = new Date(date).toISOString();
+
+  const user = await User.query()
+    .patch({
+      token_expiration_date: new_date,
+      refresh_token: crypto.randomBytes(64).toString("hex"),
+    })
+    .where("email", email);
+  return user;
+}
+
+async function sendForgotPasswordEmail(email, token) {
+  const transporter = nodemailer.createTransport({
+    host: "smtp.ethereal.email",
+    port: 587,
+    auth: {
+      user: "karine.green79@ethereal.email",
+      pass: "DHwSWVj8EuC2QZWf5f",
+    },
+  });
+
+  let info = await transporter.sendMail({
+    from: '"Fred Foo 👻" <karine.green79@ethereal.email>', // sender address
+    to: email, // list of receivers
+    subject: "forgot password ?", // Subject line
+    text: `Hello, it looks like you forgot your password. here's a token to change your password ${token}`, // plain text body
+    html: `<b>Hello, it looks like you forgot your password. here's a new token ${token}</b>`, // html body
   });
 }
 
-async function sendPasswordChangeToken(email, token) {}
-
-module.exports = { login, signup, sendTokenByEmail, verifyUserByEmail };
+module.exports = {
+  login,
+  signup,
+  sendTokenByEmail,
+  verifyUserByEmail,
+  setPasswordChangeToken,
+  sendForgotPasswordEmail,
+};
