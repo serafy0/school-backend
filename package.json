@@ -1,0 +1,30 @@
+{
+  "name": "node-sessions",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "connect-redis": "^5.1.0",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "knex": "^0.95.4",
+    "nodemailer": "^6.5.0",
+    "objection": "^2.2.15",
+    "pg": "^8.5.1",
+    "redis": "^3.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7",
+    "prettier": "^2.2.1"
+  }
+}
