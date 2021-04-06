@@ -104,6 +104,9 @@ async function sendForgotPasswordEmail(email, token) {
     html: `<b>Hello, it looks like you forgot your password. here's a new token ${token}</b>`, // html body
   });
 }
+async function setNewPassword(password, token) {
+  return await userDAO.changePassword(password, token);
+}
 
 module.exports = {
   login,
@@ -111,5 +114,5 @@ module.exports = {
   sendTokenByEmail,
   verifyUserByEmail,
   setPasswordChangeToken,
-  sendForgotPasswordEmail,
+  setNewPassword,
 };

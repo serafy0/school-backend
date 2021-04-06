@@ -71,5 +71,23 @@ async function requestNewPassword(req, res) {
     console.log(email);
   }
 }
+async function SetPassword(req, res) {
+  const { password } = req.body;
+  const token = req.params.token;
+  try {
+    user = await authService.setNewPassword(password, token);
 
-module.exports = { login, signup, vertifyByToken, requestNewPassword };
+    res.status(200).json({ message: "new password has been set" });
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(err);
+  }
+}
+
+module.exports = {
+  login,
+  signup,
+  vertifyByToken,
+  requestNewPassword,
+  SetPassword,
+};
