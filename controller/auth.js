@@ -43,8 +43,62 @@ async function signup(req, res) {
   } catch (err) {
     //never user use console.log or console.error
     //lookup winston
-    console.error(err);
+    console.error(err.detail);
     return res.status(401).json(err);
+  }
+}
+async function signupParent(req, res) {
+  const { email, password, first_name, last_name } = req.body;
+
+  //payload validation
+  //in prod use a validation libirary like joi or yum
+  if (!email || !password) {
+    return res.status(400).json("bad request params - ");
+  }
+  //check if the credentials are correct
+  try {
+    const user = await authService.signup(
+      email,
+      password,
+      first_name,
+      last_name,
+      "PARENT"
+    );
+    req.session.user = user;
+    await authService.sendTokenByEmail(user.email, user.token);
+    res.sendStatus(204);
+  } catch (err) {
+    //never user use console.log or console.error
+    //lookup winston
+    console.error(err);
+    return res.status(400).json(err);
+  }
+}
+async function signupTeacher(req, res) {
+  const { email, password, first_name, last_name } = req.body;
+
+  //payload validation
+  //in prod use a validation library like joi or yum
+  if (!email || !password) {
+    return res.status(400).json("bad request params - ");
+  }
+  //check if the credentials are correct
+  try {
+    const user = await authService.signup(
+      email,
+      password,
+      first_name,
+      last_name,
+      "TEACHER"
+    );
+    req.session.user = user;
+    await authService.sendTokenByEmail(user.email, user.token);
+    res.sendStatus(204);
+  } catch (err) {
+    //never user use console.log or console.error
+    //lookup winston
+    console.error(err);
+    return res.status(400).json(err);
   }
 }
 
@@ -84,10 +138,25 @@ async function SetPassword(req, res) {
   }
 }
 
+async function connectParentToStudent(req, res) {
+  const parent_id = req.session.user.id;
+  const { student_id } = req.body;
+  try {
+    await authService.connectParentToStudent(parent_id, student_id);
+    res.status(200).send("connecting done successfully");
+  } catch (err) {
+    console.log(err);
+    res.status(400).send(parent_id);
+  }
+}
+
 module.exports = {
   login,
   signup,
   vertifyByToken,
   requestNewPassword,
   SetPassword,
+  signupTeacher,
+  signupParent,
+  connectParentToStudent,
 };

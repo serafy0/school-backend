@@ -11,7 +11,7 @@ async function login(email, password) {
     //indicating whether the password hashes match
     const match = await bcrypt.compare(password, user.password);
     if (match) {
-      return { id: user.id, roles: user.roles };
+      return { id: user.id, role: user.role };
     } else {
       return Promise.reject("wrong username or password");
     }
@@ -20,13 +20,14 @@ async function login(email, password) {
   }
 }
 
-async function signup(email, password, first_name, last_name) {
+async function signup(email, password, first_name, last_name, role) {
   try {
     const user = await userDAO.createUser(
       email,
       password,
       first_name,
-      last_name
+      last_name,
+      role
     );
     await login(email, password);
     return user;
@@ -34,6 +35,36 @@ async function signup(email, password, first_name, last_name) {
     return Promise.reject(err);
   }
 }
+// async function signupTeacher(email, password, first_name, last_name, role) {
+//   try {
+//     const user = await userDAO.createUser(
+//       email,
+//       password,
+//       first_name,
+//       last_name,
+//       "TEACHER"
+//     );
+//     await login(email, password);
+//     return user;
+//   } catch (err) {
+//     return Promise.reject(err);
+//   }
+// }
+// async function signupParent(email, password, first_name, last_name) {
+//   try {
+//     const user = await userDAO.createUser(
+//       email,
+//       password,
+//       first_name,
+//       last_name,
+//         "PARENT"
+//     );
+//     await login(email, password);
+//     return user;
+//   } catch (err) {
+//     return Promise.reject(err);
+//   }
+// }
 
 const User = require("../db/models/user");
 
@@ -67,8 +98,8 @@ async function sendTokenByEmail(email, token) {
     from: '"Fred Foo 👻" <karine.green79@ethereal.email>', // sender address
     to: email, // list of receivers
     subject: "Hello ✔", // Subject line
-    text: `Hello, this is your token link ${token}`, // plain text body
-    html: `<b>Hello this is your token ${token}</b>`, // html body
+    text: `Hello, this is your registration token link ${token}`, // plain text body
+    html: `<b>Hello this is your registration token ${token}</b>`, // html body
   });
 }
 const crypto = require("crypto");
@@ -108,6 +139,13 @@ async function setNewPassword(password, token) {
   return await userDAO.changePassword(password, token);
 }
 
+async function connectParentToStudent(parent_id, student_id) {
+  const student = await User.query()
+    .where("id", student_id)
+    .update({ parent_id: parent_id });
+
+  return student;
+}
 module.exports = {
   login,
   signup,
@@ -115,4 +153,5 @@ module.exports = {
   verifyUserByEmail,
   setPasswordChangeToken,
   setNewPassword,
+  connectParentToStudent,
 };
