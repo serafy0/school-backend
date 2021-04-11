@@ -154,5 +154,8 @@ exports.down = async function (knex) {
   await knex.schema.dropTableIfExists("feedback");
   await knex.schema.dropTableIfExists("session");
   await knex.schema.dropTableIfExists("course");
+  await knex.schema.dropTableIfExists("checkpoint");
+  await knex.schema.dropTableIfExists("milestone");
+
   return knex.schema.dropTableIfExists("user");
 };
