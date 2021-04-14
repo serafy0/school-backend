@@ -52,6 +52,26 @@ exports.up = async function (knex) {
     table.uuid("teacher_id").references("id").inTable("user"); //one to one
 
     // table many students
+    //table can have many dates in the format Weekday/hour
+  });
+
+  // a course can have many
+  await knex.schema.createTable("course_in_timetable", (table) => {
+    table
+      .string("course_code")
+      .references("code")
+      .inTable("course")
+      .onDelete("CASCADE"); // If Article is deleted, delete Comment as well.
+    table.time("course_time");
+    table.enum("weekday", [
+      "MONDAY",
+      "TUESDAY",
+      "WEDNESDAY",
+      "THURSDAY",
+      "FRIDAY",
+      "SATURDAY",
+      "SUNDAY",
+    ]);
   });
 
   await knex.schema.createTable("course_student", (table) => {
@@ -68,7 +88,11 @@ exports.up = async function (knex) {
 
   await knex.schema.createTable("session", (table) => {
     table.increments("session_id").primary().notNullable();
-    table.string("course_code").references("code").inTable("course");
+    table
+      .string("course_code")
+      .references("code")
+      .inTable("course")
+      .onDelete("CASCADE");
     table.dateTime("session_date");
     table.integer("session_number");
 
@@ -86,12 +110,16 @@ exports.up = async function (knex) {
     table.text("feedback_text");
     table.integer("rating", 5).notNullable();
     table.enum("impulse_strategy", ["angry", "happy", "sad", "none"]);
+    table.uuid("written_by").references("id").inTable("user");
     table.timestamps(true, true);
 
     //one session can have many feedbacks
     table.integer("session_id").references("session_id").inTable("session");
 
+    //if feedback was on a course in general
     table.string("course_code", 5).references("code").inTable("course");
+
+    table.uuid("student_id").references("id").inTable("user");
   });
   //feedback table
 
@@ -104,19 +132,20 @@ exports.up = async function (knex) {
       .defaultTo(knex.raw("uuid_generate_v4()"));
     table.text("comment_text");
     table.uuid("feedback_id").references("id").inTable("feedback");
+    table.uuid("written_by").references("id").inTable("user");
     table.timestamps(true, true);
   });
   //options for sessions i think
-  await knex.schema.createTable("options", (table) => {
-    table
-      .uuid("id")
-      .unique()
-      .notNullable()
-      .primary()
-      .defaultTo(knex.raw("uuid_generate_v4()"));
-    table.text("comment_text");
-    table.timestamps(true, true);
-  });
+  // await knex.schema.createTable("options", (table) => {
+  //   table
+  //     .uuid("id")
+  //     .unique()
+  //     .notNullable()
+  //     .primary()
+  //     .defaultTo(knex.raw("uuid_generate_v4()"));
+  //   table.text("comment_text");
+  //   table.timestamps(true, true);
+  // });
   await knex.schema.createTable("checkpoint", (table) => {
     table
       .uuid("id")
@@ -126,33 +155,16 @@ exports.up = async function (knex) {
       .defaultTo(knex.raw("uuid_generate_v4()"));
     table.text("checkpoint_text").notNullable();
   });
-
-  await knex.schema.createTable("goal", (table) => {
-    table
-      .uuid("id")
-      .unique()
-      .notNullable()
-      .primary()
-      .defaultTo(knex.raw("uuid_generate_v4()"));
-    table.string("goal_title").notNullable();
-    table.text("goal_description").notNullable();
-  });
-  await knex.schema.createTable("milestone", (table) => {
-    table
-      .uuid("id")
-      .unique()
-      .notNullable()
-      .primary()
-      .defaultTo(knex.raw("uuid_generate_v4()"));
-    table.string("milestone_title").notNullable();
-    table.text("milestone_description").notNullable();
-  });
 };
 
 exports.down = async function (knex) {
   await knex.schema.dropTableIfExists("course_student");
+  await knex.schema.dropTableIfExists("comment");
+  await knex.schema.dropTableIfExists("option");
+  await knex.schema.dropTableIfExists("goal");
   await knex.schema.dropTableIfExists("feedback");
   await knex.schema.dropTableIfExists("session");
+  await knex.schema.dropTableIfExists("course_time");
   await knex.schema.dropTableIfExists("course");
   await knex.schema.dropTableIfExists("checkpoint");
   await knex.schema.dropTableIfExists("milestone");
