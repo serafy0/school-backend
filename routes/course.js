@@ -6,8 +6,6 @@ const courseController = require("../controller/course");
 const role = require("../authorization/role");
 const authorize = require("../authorization/authorize");
 
-const validator = require("../dao/course.validator");
-
 router.post("/", courseController.createCourse);
 router.get("/:code", courseController.getOneCourse);
 router.put("/:code", courseController.EditCourse);
