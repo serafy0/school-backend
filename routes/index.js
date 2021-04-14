@@ -10,7 +10,7 @@ const authorize = require("../authorization/authorize");
 router.post("/login", authController.login);
 router.post("/signup", authController.signup);
 
-router.get("/verify/:token", authController.vertifyByToken);
+router.get("/verify/:token", authController.verifyByToken);
 router.post("/forgot_password/", authController.requestNewPassword);
 router.post("/forgot_password/:token", authController.SetPassword);
 
@@ -19,7 +19,7 @@ router.post("/teacher/login");
 router.post("/teacher/signup");
 
 //parent signup and registration
-router.post("/parent/login", authController.signupTeacher);
+router.post("/teacher/signup", authController.signupTeacher);
 router.post("/parent/signup", authController.signupParent);
 
 router.use(authenticate);
