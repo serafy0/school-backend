@@ -1,7 +1,7 @@
 const sessionService = require("../service/sessoin");
 // const session = require("express-session");
 
-const ORMhandler = require("../errors/errr");
+const ORMhandler = require("../errors/orm-error-handler");
 
 async function createSession(req, res, next) {
   const { course_code, session_date } = req.body;

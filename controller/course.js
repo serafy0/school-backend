@@ -1,7 +1,7 @@
 const courseService = require("../service/course");
 // const session = require("express-session");
 
-const ORMhandler = require("../errors/errr");
+const ORMhandler = require("../errors/orm-error-handler");
 
 async function getOneCourse(req, res) {
   let code = req.params.code;
