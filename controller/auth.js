@@ -98,11 +98,11 @@ async function signupTeacher(req, res) {
     //never user use console.log or console.error
     //lookup winston
     console.error(err);
-    return res.status(400).json(err);
+    res.status(400).json(err);
   }
 }
 
-async function vertifyByToken(req, res) {
+async function verifyByToken(req, res) {
   const token = req.params.token;
   console.log(token);
   try {
@@ -129,12 +129,12 @@ async function SetPassword(req, res) {
   const { password } = req.body;
   const token = req.params.token;
   try {
-    user = await authService.setNewPassword(password, token);
+    const user = await authService.setNewPassword(password, token);
 
     res.status(200).json({ message: "new password has been set" });
   } catch (err) {
     console.log(err);
-    res.status(400).send(err);
+    res.status(500).send(err);
   }
 }
 
@@ -153,7 +153,7 @@ async function connectParentToStudent(req, res) {
 module.exports = {
   login,
   signup,
-  vertifyByToken,
+  verifyByToken,
   requestNewPassword,
   SetPassword,
   signupTeacher,

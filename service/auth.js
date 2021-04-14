@@ -35,36 +35,6 @@ async function signup(email, password, first_name, last_name, role) {
     return Promise.reject(err);
   }
 }
-// async function signupTeacher(email, password, first_name, last_name, role) {
-//   try {
-//     const user = await userDAO.createUser(
-//       email,
-//       password,
-//       first_name,
-//       last_name,
-//       "TEACHER"
-//     );
-//     await login(email, password);
-//     return user;
-//   } catch (err) {
-//     return Promise.reject(err);
-//   }
-// }
-// async function signupParent(email, password, first_name, last_name) {
-//   try {
-//     const user = await userDAO.createUser(
-//       email,
-//       password,
-//       first_name,
-//       last_name,
-//         "PARENT"
-//     );
-//     await login(email, password);
-//     return user;
-//   } catch (err) {
-//     return Promise.reject(err);
-//   }
-// }
 
 const User = require("../db/models/user");
 
@@ -83,14 +53,14 @@ async function verifyUserByEmail(token) {
   //     .returning('*');
 }
 const nodemailer = require("nodemailer");
-
+const config = require("../config");
 async function sendTokenByEmail(email, token) {
   const transporter = nodemailer.createTransport({
     host: "smtp.ethereal.email",
     port: 587,
     auth: {
-      user: "karine.green79@ethereal.email",
-      pass: "DHwSWVj8EuC2QZWf5f",
+      user: config.email,
+      pass: config.pass,
     },
   });
 
@@ -122,17 +92,17 @@ async function sendForgotPasswordEmail(email, token) {
     host: "smtp.ethereal.email",
     port: 587,
     auth: {
-      user: "darius.rosenbaum@ethereal.email",
-      pass: "yRzT9ZDKknwjxjRZQq",
+      user: config.email,
+      pass: config.pass,
     },
   });
 
   let info = await transporter.sendMail({
-    from: '"Fred Foo 👻" <karine.green79@ethereal.email>', // sender address
+    from: `"Fred Foo 👻" <${config.email}>`, // sender address
     to: email, // list of receivers
     subject: "forgot password ?", // Subject line
     text: `Hello, it looks like you forgot your password. here's a token to change your password ${token}`, // plain text body
-    html: `<b>Hello, it looks like you forgot your password. here's a new token ${token}</b>`, // html body
+    html: `<b>Hello, it looks like you forgot your password. here's a new token <a href="${config.hostname}/forgot_password/${token}"> click here</a></b>`, // html body
   });
 }
 async function setNewPassword(password, token) {
