@@ -7,10 +7,14 @@ class Course extends Model {
     return "course";
   }
 
+  static get idColumn() {
+    return "code";
+  }
+
   static get relationMappings() {
     return {
       parent: {
-        relation: Model.Model.BelongsToOneRelation,
+        relation: Model.BelongsToOneRelation,
         modelClass: User,
         join: {
           from: "user.parent_id",
@@ -40,7 +44,34 @@ class Course extends Model {
         },
         to: "user.id",
       },
+      course_in_timetable: {
+        relation: Model.HasManyRelation,
+        modelClass: CourseInTimeTable,
+        from: "course.code",
+        to: "course_in_timetable.course_code",
+      },
+    };
+  }
+
+  static get jsonSchema() {
+    return {
+      type: "object",
+      required: ["code", "name"],
+
+      properties: {
+        code: { type: "string", maxLength: 5 },
+        name: { type: "string" },
+        description: { type: "string", minLength: 1, maxLength: 255 },
+        teacher_id: { type: "string" },
+      },
     };
   }
 }
+
+class CourseInTimeTable extends Model {
+  static get tableName() {
+    return "course_in_timetable";
+  }
+}
+
 module.exports = Course;
