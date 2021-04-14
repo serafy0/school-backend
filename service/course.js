@@ -1,5 +1,4 @@
-const Course = require("../db/models/course");
-
+const { Course, CourseInTimeTable } = require("../db/models/course");
 async function getCourseByCode(code) {
   const course = await Course.query().where("code", code).returning("*");
   return course;
@@ -8,10 +7,10 @@ async function CreateCourse(code, name, description, teacher_id) {
   let new_course = null;
   new_course = await Course.query()
     .insert({
-      code: code,
-      name: name,
-      description: description,
-      teacher_id: teacher_id,
+      code,
+      name,
+      description,
+      teacher_id,
     })
     .returning("*");
   return new_course
@@ -39,11 +38,20 @@ async function EditCourse(code, name, description, teacher_id) {
 }
 
 async function setDateForCourseInTimeTable(code, weekday, course_time) {
-  const course = await Course.query().findById(code);
-  const course_date = await course.$relatedQuery("course_in_timetable").insert({
-    weekday,
-    course_time,
-  });
+  const course_date = await Course.relatedQuery("course_in_timetable")
+    .for(code)
+    .insert({ weekday: weekday, course_time: course_time })
+    .returning("*")
+    .first();
+  return course_date;
+}
+
+async function removeDateFromCourseTimeTable(time_id) {
+  // const numberOfDeletedRows = Course.relatedQuery(
+  //   "course_in_timetable"
+  // ).deleteById(time_id);
+  // return numberOfDeletedRows;
+  return CourseInTimeTable.query().deleteById(time_id);
 }
 
 module.exports = {
@@ -52,4 +60,5 @@ module.exports = {
   DeleteCourse,
   setDateForCourseInTimeTable,
   getCourseByCode,
+  removeDateFromCourseTimeTable,
 };
