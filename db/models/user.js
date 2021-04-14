@@ -29,6 +29,29 @@ class User extends Model {
         },
         to: "course.code",
       },
+
+      feedbacks: {
+        relation: Model.HasManyRelation,
+        modelClass: "/Feedback",
+        from: "user.id",
+        to: "feedback.student_id",
+      },
+    };
+  }
+
+  static get jsonSchema() {
+    return {
+      type: "object",
+      required: ["email", "password", "first_name"],
+
+      properties: {
+        first_name: { type: "string" },
+        last_name: { type: "string" },
+        email: { type: "string" },
+        password: { type: "string" },
+        role: { type: "string" },
+        parent_id: "string",
+      },
     };
   }
 }

@@ -38,7 +38,7 @@ async function changePassword(password, token) {
     .where("refresh_token", token)
     .andWhere("token_expiration_date", ">", new_date)
 
-    .update({
+    .patch({
       password: bcrypt.hashSync(password, 10),
       token_expiration_date: null,
       refresh_token: null,
