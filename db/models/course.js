@@ -47,8 +47,7 @@ class Course extends Model {
       course_in_timetable: {
         relation: Model.HasManyRelation,
         modelClass: CourseInTimeTable,
-        from: "course.code",
-        to: "course_in_timetable.course_code",
+        join: { from: "course.code", to: "course_in_timetable.course_code" },
       },
     };
   }
@@ -62,7 +61,6 @@ class Course extends Model {
         code: { type: "string", maxLength: 5 },
         name: { type: "string" },
         description: { type: "string", minLength: 1, maxLength: 255 },
-        teacher_id: { type: "string" },
       },
     };
   }
@@ -71,6 +69,17 @@ class Course extends Model {
 class CourseInTimeTable extends Model {
   static get tableName() {
     return "course_in_timetable";
+  }
+  static get jsonSchema() {
+    return {
+      type: "object",
+      required: ["weekday", "course_time"],
+
+      properties: {
+        weekday: { type: "string" },
+        course_time: { type: "date" },
+      },
+    };
   }
 }
 
