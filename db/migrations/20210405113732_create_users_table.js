@@ -57,6 +57,7 @@ exports.up = async function (knex) {
 
   // a course can have many
   await knex.schema.createTable("course_in_timetable", (table) => {
+    table.increments().primary();
     table
       .string("course_code")
       .references("code")
@@ -165,6 +166,7 @@ exports.down = async function (knex) {
   await knex.schema.dropTableIfExists("feedback");
   await knex.schema.dropTableIfExists("session");
   await knex.schema.dropTableIfExists("course_time");
+  await knex.schema.dropTableIfExists("course_in_timetable");
   await knex.schema.dropTableIfExists("course");
   await knex.schema.dropTableIfExists("checkpoint");
   await knex.schema.dropTableIfExists("milestone");

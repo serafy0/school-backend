@@ -8,9 +8,16 @@ const authorize = require("../authorization/authorize");
 
 const validator = require("../dao/course.validator");
 
-router.post("/course", courseController.createCourse);
-router.get("/course/:code", courseController.getOneCourse);
-router.put("/course/:code", courseController.EditCourse);
-router.delete("/course/:code", courseController.deleteCourse);
+router.post("/", courseController.createCourse);
+router.get("/:code", courseController.getOneCourse);
+router.put("/:code", courseController.EditCourse);
+router.delete("/:code", courseController.deleteCourse);
+
+router.post(
+  "/set_in_table/:course_code",
+  courseController.addCourseToTimeTable
+);
+
+router.delete("/date_in_table/:date_num", courseController.removeDate);
 
 module.exports = router;

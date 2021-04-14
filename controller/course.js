@@ -6,7 +6,6 @@ const ORMhandler = require("../errors/errr");
 async function getOneCourse(req, res) {
   let code = req.params.code;
 
-  // code = code.autocapitalize;
   try {
     const course = await courseService.getCourseByCode(code);
     res.status(200).send(course);
@@ -66,4 +65,42 @@ async function createCourse(req, res, next) {
   }
 }
 
-module.exports = { getOneCourse, deleteCourse, EditCourse, createCourse };
+async function addCourseToTimeTable(req, res, next) {
+  const code = req.params.course_code;
+  const { weekday, course_time } = req.body;
+
+  try {
+    const new_date = await courseService.setDateForCourseInTimeTable(
+      code,
+      weekday,
+      course_time
+    );
+    res.status(200).json(new_date);
+  } catch (err) {
+    ORMhandler.errorHandler(err, res, req, next);
+  }
+}
+
+async function removeDate(req, res, next) {
+  const timeTableId = req.params.date_num;
+  try {
+    const deleted_date = await courseService.removeDateFromCourseTimeTable(
+      timeTableId
+    );
+    if (deleted_date <= 0) {
+      res.status(404).json("couldn't find that date");
+    }
+    res.status(200).json(deleted_date);
+  } catch (err) {
+    next(ORMhandler.errorHandler(err, res, req, next));
+  }
+}
+
+module.exports = {
+  getOneCourse,
+  deleteCourse,
+  EditCourse,
+  createCourse,
+  removeDate,
+  addCourseToTimeTable,
+};
