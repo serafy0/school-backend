@@ -7,7 +7,9 @@ async function createSession(course_code, session_date) {
     .insert({
       course_code,
       session_date,
-      session_number: (await Session.query().resultSize()) + 1,
+      session_number:
+        (await Session.query().where("course_code", course_code).resultSize()) +
+        1,
     })
     .returning("*");
   return new_session
