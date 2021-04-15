@@ -7,8 +7,8 @@ const role = require("../authorization/role");
 const authorize = require("../authorization/authorize");
 
 router.post("/", sessionController.createSession);
-router.get("/:code");
-router.put("/:code");
-router.delete("/:code", sessionController.deleteSession);
+router.get("/:id", sessionController.getOneSession);
+router.put("/:id", sessionController.editSession);
+router.delete("/:id", sessionController.deleteSession);
 
 module.exports = router;

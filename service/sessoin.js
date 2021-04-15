@@ -21,4 +21,16 @@ async function removeSession(session_id) {
   return Session.query().deleteById(session_id);
 }
 
-module.exports = { createSession, removeSession };
+async function getOneSession(session_id) {
+  return Session.query().findById(session_id);
+}
+
+async function editSession(session_id, session_date) {
+  return Session.query()
+    .patch({ session_date })
+    .where("session_id", session_id)
+    .returning("*")
+    .first();
+}
+
+module.exports = { createSession, removeSession, getOneSession, editSession };
