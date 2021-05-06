@@ -22,6 +22,27 @@ router.post("/teacher/signup");
 router.post("/teacher/signup", authController.signupTeacher);
 router.post("/parent/signup", authController.signupParent);
 
+router.all("/checklogin", (req, res) => {
+  // res.status(req.session.id ? 200 : 401).send(re)
+  if (req.session.user) {
+    res.status(200).send(req.session.user);
+  } else {
+    res.status(401).send("not ok :(");
+  }
+});
+
+router.post("/logout", async (req, res, next) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.log(err);
+      res.status(500);
+    }
+    res.clearCookie("sessionId");
+
+    res.status(200).send("OK");
+  });
+});
+
 router.use(authenticate);
 
 router.post(

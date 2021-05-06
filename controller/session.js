@@ -1,5 +1,4 @@
 const sessionService = require("../service/sessoin");
-// const session = require("express-session");
 
 const ORMhandler = require("../errors/orm-error-handler");
 
@@ -38,7 +37,11 @@ async function getOneSession(req, res, next) {
   const session_id = req.params.id;
   try {
     const session = await sessionService.getOneSession(session_id);
-    res.status(200).json(session);
+    if (session > 0) {
+      res.status(200).json(session);
+    } else {
+      res.status(404).json({ message: "session not found" });
+    }
   } catch (err) {
     ORMhandler.errorHandler(err, res, req, next);
   }

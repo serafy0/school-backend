@@ -8,7 +8,7 @@ async function getOneCourse(req, res) {
 
   try {
     const course = await courseService.getCourseByCode(code);
-    res.status(200).send(course);
+    res.status(200).json(course);
   } catch (err) {
     res.status(404).send("course not found");
   }

@@ -62,7 +62,7 @@ exports.up = async function (knex) {
       .string("course_code")
       .references("code")
       .inTable("course")
-      .onDelete("CASCADE"); // If Article is deleted, delete Comment as well.
+      .onDelete("CASCADE"); // If Course is deleted, delete date as well.
     table.time("course_time");
     table.enum("weekday", [
       "MONDAY",

@@ -2,6 +2,7 @@ const express = require("express");
 const router = require("./routes");
 const courseRouter = require("./routes/course");
 const sessionRouter = require("./routes/session");
+const feedRouter = require("./routes/Feedback");
 
 const session = require("./middleware/session ");
 
@@ -27,9 +28,10 @@ app.use(session);
 
 app.use("/course", courseRouter);
 app.use("/session", sessionRouter);
+app.use("/feedback", feedRouter);
 
 app.use(router);
 
-// app.use(apiErrorHandler);
+app.use(apiErrorHandler);
 
 app.listen(8088, () => console.log("server is running on port 8080"));

@@ -1,6 +1,6 @@
 const userDAO = require("../dao/user");
 const bcrypt = require("bcrypt");
-
+const { checkIfAlreadyExists } = require("../errors/auth-errors");
 async function login(email, password) {
   //lookup user by email
   try {
@@ -32,6 +32,7 @@ async function signup(email, password, first_name, last_name, role) {
     await login(email, password);
     return user;
   } catch (err) {
+    await checkIfAlreadyExists(err);
     return Promise.reject(err);
   }
 }

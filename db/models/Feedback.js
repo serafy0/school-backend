@@ -25,5 +25,17 @@ class Feedback extends Model {
       },
     };
   }
+
+  static get jsonSchema() {
+    return {
+      type: "object",
+      required: ["", "course_time"],
+
+      properties: {
+        weekday: { type: "string" },
+        course_time: { type: "date" },
+      },
+    };
+  }
 }
 module.exports = Feedback;

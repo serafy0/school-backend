@@ -1,6 +1,6 @@
 const { Course, CourseInTimeTable } = require("../db/models/course");
 async function getCourseByCode(code) {
-  const course = await Course.query().where("code", code).returning("*");
+  const course = await Course.query().findById(code);
   return course;
 }
 async function CreateCourse(code, name, description, teacher_id) {
