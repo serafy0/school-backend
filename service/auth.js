@@ -20,14 +20,15 @@ async function login(email, password) {
   }
 }
 
-async function signup(email, password, first_name, last_name, role) {
+async function signup(email, password, first_name, last_name, role, parent_id) {
   try {
     const user = await userDAO.createUser(
       email,
       password,
       first_name,
       last_name,
-      role
+      role,
+      parent_id
     );
     await login(email, password);
     return user;

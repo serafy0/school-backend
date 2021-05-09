@@ -12,7 +12,14 @@ async function findUserByEmail(email) {
   return user ? user : Promise.reject("couldn't find the user");
 }
 
-async function createUser(email, password, first_name, last_name, role) {
+async function createUser(
+  email,
+  password,
+  first_name,
+  last_name,
+  role,
+  parent_id
+) {
   const user = await User.query()
     .insert({
       email: email,
@@ -22,6 +29,7 @@ async function createUser(email, password, first_name, last_name, role) {
       // token_expiration_date: Date.now() + 100,
       role: role,
       token: first_name + crypto.randomBytes(64).toString("hex"),
+      parent_id: parent_id,
     })
     .returning("*");
   return user

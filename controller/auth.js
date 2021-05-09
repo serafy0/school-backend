@@ -24,6 +24,11 @@ async function login(req, res) {
 async function signup(req, res) {
   const { email, password, first_name, last_name } = req.body;
 
+  let parent_id = null;
+  if (req.session.user && req.session.user.role === "PARENT") {
+    parent_id = req.session.user.id;
+  }
+
   //payload validation
   //in prod use a validation libirary like joi or yum
   if (!email || !password) {
@@ -35,9 +40,11 @@ async function signup(req, res) {
       email,
       password,
       first_name,
-      last_name
+      last_name,
+      "STUDENT",
+      parent_id
     );
-    req.session.user = user;
+    // req.session.user = user;
     await authService.sendTokenByEmail(user.email, user.token);
     res.sendStatus(204);
   } catch (err) {
@@ -65,7 +72,7 @@ async function signupParent(req, res) {
       last_name,
       "PARENT"
     );
-    req.session.user = user;
+    // req.session.user = user;
     await authService.sendTokenByEmail(user.email, user.token);
     res.sendStatus(204);
   } catch (err) {
@@ -92,7 +99,7 @@ async function signupTeacher(req, res) {
       last_name,
       "TEACHER"
     );
-    req.session.user = user;
+    // req.session.user = user;
     await authService.sendTokenByEmail(user.email, user.token);
     res.sendStatus(204);
   } catch (err) {
