@@ -1,22 +1,11 @@
-const Course = require("db/models/course");
+const User = require("../db/models/user");
 
-async function createFeedback(
-  feedback_text,
-  rating,
-  session_id,
-  course_code,
-  student_id
-) {}
+async function getRelatedStudents(parent_id) {
+  const students = User.query()
+    .select("id", "email", "first_name", "last_name")
+    .where("parent_id", parent_id);
 
-async function editFeedback() {}
+  return students;
+}
 
-async function deleteFeedback() {}
-
-async function getOneFeedback() {}
-
-module.exports = {
-  createFeedback,
-  editFeedback,
-  deleteFeedback,
-  getOneFeedback,
-};
+module.exports = { getRelatedStudents };

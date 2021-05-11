@@ -3,6 +3,7 @@ const router = require("./routes");
 const courseRouter = require("./routes/course");
 const sessionRouter = require("./routes/session");
 const feedRouter = require("./routes/Feedback");
+const parentRouter = require("./routes/parent");
 
 const session = require("./middleware/session ");
 
@@ -29,6 +30,7 @@ app.use(session);
 app.use("/course", courseRouter);
 app.use("/session", sessionRouter);
 app.use("/feedback", feedRouter);
+app.use("/p", parentRouter);
 
 app.use(router);
 
