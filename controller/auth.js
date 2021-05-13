@@ -25,8 +25,12 @@ async function signup(req, res) {
   const { email, password, first_name, last_name } = req.body;
 
   let parent_id = null;
-  if (req.session.user && req.session.user.role === "PARENT") {
-    parent_id = req.session.user.id;
+  if (req.session.user) {
+    if (req.session.user.role === "PARENT") {
+      parent_id = req.session.user.id;
+    } else {
+      return res.status(401).send("looks like you are not allowed to do that");
+    }
   }
 
   //payload validation
