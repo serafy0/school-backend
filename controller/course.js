@@ -18,7 +18,11 @@ async function deleteCourse(req, res) {
   let code = req.params.code;
   try {
     const course = await courseService.DeleteCourse(code);
-    res.status(200).send(course);
+    if (course) {
+      res.status(200).send(course);
+    } else {
+      res.status(404);
+    }
   } catch (err) {
     res.status(404).send("course not found or couldn't delete");
   }
@@ -36,7 +40,7 @@ async function EditCourse(req, res, next) {
   // }
   try {
     const course = await courseService.EditCourse(code, name, description);
-    res.send(200).send(course);
+    res.status(200).send(course);
   } catch (err) {
     next(err);
   }
@@ -96,6 +100,19 @@ async function removeDate(req, res, next) {
   }
 }
 
+async function getAllCoursesTaughtByTeacher(req, res, next) {
+  const teacher_id = req.session.user.id;
+  try {
+    const courses = await courseService.getAllCoursesTaughtByTeacher(
+      teacher_id
+    );
+    console.log(courses);
+    res.status(200).json(courses);
+  } catch (err) {
+    ORMhandler(err, res, req, next);
+  }
+}
+
 module.exports = {
   getOneCourse,
   deleteCourse,
@@ -103,4 +120,5 @@ module.exports = {
   createCourse,
   removeDate,
   addCourseToTimeTable,
+  getAllCoursesTaughtByTeacher,
 };
