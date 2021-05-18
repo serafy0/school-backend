@@ -7,6 +7,7 @@ const role = require("../authorization/role");
 const authorize = require("../authorization/authorize");
 
 router.post("/", courseController.createCourse);
+router.post("/add", courseController.createCourse);
 router.get("/:code", courseController.getOneCourse);
 router.put("/:code", courseController.EditCourse);
 router.delete("/:code", courseController.deleteCourse);
@@ -17,5 +18,11 @@ router.post(
 );
 
 router.delete("/date_in_table/:date_num", courseController.removeDate);
+
+router.get(
+  "/teacher/taught_by",
+  authorize(role.TEACHER),
+  courseController.getAllCoursesTaughtByTeacher
+);
 
 module.exports = router;

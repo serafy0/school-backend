@@ -54,6 +54,13 @@ async function removeDateFromCourseTimeTable(time_id) {
   return CourseInTimeTable.query().deleteById(time_id);
 }
 
+//probably should be in a separate teacher.service.js file
+async function getAllCoursesTaughtByTeacher(teacher_id) {
+  const courses = await Course.query().where("teacher_id", teacher_id);
+  console.log(courses + "is this working");
+  return courses;
+}
+
 module.exports = {
   CreateCourse,
   EditCourse,
@@ -61,4 +68,6 @@ module.exports = {
   setDateForCourseInTimeTable,
   getCourseByCode,
   removeDateFromCourseTimeTable,
+
+  getAllCoursesTaughtByTeacher,
 };
