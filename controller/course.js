@@ -42,7 +42,7 @@ async function EditCourse(req, res, next) {
     const course = await courseService.EditCourse(code, name, description);
     res.status(200).send(course);
   } catch (err) {
-    ORMhandler.errorHandler(err, res, req, next);
+    next(err);
   }
 }
 

@@ -28,8 +28,8 @@ async function DeleteCourse(code) {
 }
 
 async function EditCourse(code, name, description, teacher_id) {
-  const new_course = await Course.query()
-    .update({ name, description, teacher_id })
+  const new_course = Course.query()
+    .patch({ name, description, teacher_id })
     .where("code", code)
     .returning("*")
     .first();
