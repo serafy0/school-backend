@@ -56,8 +56,10 @@ async function removeDateFromCourseTimeTable(time_id) {
 
 //probably should be in a separate teacher.service.js file
 async function getAllCoursesTaughtByTeacher(teacher_id) {
-  const courses = await Course.query().where("teacher_id", teacher_id);
-  console.log(courses + "is this working");
+  const courses = await Course.query()
+    .where("teacher_id", teacher_id)
+    .withGraphFetched("course_in_timetable");
+
   return courses;
 }
 

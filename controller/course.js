@@ -71,13 +71,13 @@ async function createCourse(req, res, next) {
 
 async function addCourseToTimeTable(req, res, next) {
   const code = req.params.course_code;
-  const { weekday, course_time } = req.body;
+  const { weekday, time } = req.body;
 
   try {
     const new_date = await courseService.setDateForCourseInTimeTable(
       code,
       weekday,
-      course_time
+      time
     );
     res.status(200).json(new_date);
   } catch (err) {
@@ -96,7 +96,7 @@ async function removeDate(req, res, next) {
     }
     res.status(200).json(deleted_date);
   } catch (err) {
-    next(ORMhandler.errorHandler(err, res, req, next));
+    ORMhandler.errorHandler(err, res, req, next);
   }
 }
 
@@ -106,7 +106,6 @@ async function getAllCoursesTaughtByTeacher(req, res, next) {
     const courses = await courseService.getAllCoursesTaughtByTeacher(
       teacher_id
     );
-    console.log(courses);
     res.status(200).json(courses);
   } catch (err) {
     ORMhandler(err, res, req, next);
