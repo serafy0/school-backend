@@ -76,8 +76,16 @@ exports.up = async function (knex) {
   });
 
   await knex.schema.createTable("course_student", (table) => {
-    table.string("course_code", 5).references("code").inTable("course");
-    table.uuid("student_id").references("id").inTable("user");
+    table
+      .string("course_code", 5)
+      .references("code")
+      .inTable("course")
+      .onDelete("CASCADE");
+    table
+      .uuid("student_id")
+      .references("id")
+      .inTable("user")
+      .onDelete("CASCADE");
 
     table.primary(["course_code", "student_id"]);
   });
