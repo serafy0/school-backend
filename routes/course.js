@@ -12,12 +12,18 @@ router.get("/:code", courseController.getOneCourse);
 router.put("/:code", courseController.EditCourse);
 router.delete("/:code", courseController.deleteCourse);
 
+router.get("/find/:search", courseController.searchCourses);
+
 router.post(
   "/set_in_table/:course_code",
   courseController.addCourseToTimeTable
 );
 
-router.delete("/date_in_table/:date_num", courseController.removeDate);
+router.delete(
+  "/date_in_table/:date_num",
+  authorize(role.TEACHER),
+  courseController.removeDate
+);
 
 router.get(
   "/teacher/taught_by",

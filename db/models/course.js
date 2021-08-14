@@ -1,5 +1,4 @@
 const { Model } = require("objection");
-const User = require("./user");
 const Session = require("./session");
 
 class Course extends Model {
@@ -12,6 +11,9 @@ class Course extends Model {
   }
 
   static get relationMappings() {
+    //fixed require loop error https://vincit.github.io/objection.js/guide/relations.html#require-loops
+    const User = require("./user");
+
     return {
       parent: {
         relation: Model.BelongsToOneRelation,
@@ -41,13 +43,18 @@ class Course extends Model {
             from: "course_student.course_code",
             to: "course_student.student_id",
           },
+          to: "user.id",
         },
-        to: "user.id",
       },
       course_in_timetable: {
         relation: Model.HasManyRelation,
         modelClass: CourseInTimeTable,
         join: { from: "course.code", to: "course_in_timetable.course_code" },
+      },
+      teacher: {
+        relation: Model.HasOneRelation,
+        modelClass: User,
+        join: { from: "course.teacher_id", to: "user.id" },
       },
     };
   }
@@ -58,9 +65,13 @@ class Course extends Model {
       required: ["code", "name"],
 
       properties: {
-        code: { type: "string", maxLength: 5 },
+        code: {
+          type: "string",
+          maxLength: 5,
+          minLength: 1,
+        },
         name: { type: "string" },
-        description: { type: "string", minLength: 1, maxLength: 255 },
+        description: { type: "string", maxLength: 255 },
       },
     };
   }

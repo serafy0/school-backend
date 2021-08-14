@@ -17,10 +17,18 @@ class Feedback extends Model {
       },
       student: {
         relation: Model.BelongsToOneRelation,
-        modelClass: require("/user"),
+        modelClass: require("./user"),
         join: {
           from: "feedback.student_id",
           to: "user.id",
+        },
+      },
+      session: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: require("./session"),
+        join: {
+          from: "feedback.session_id",
+          to: "session_id",
         },
       },
     };

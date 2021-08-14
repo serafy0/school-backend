@@ -65,7 +65,7 @@ async function createCourse(req, res, next) {
     console.log(course);
   } catch (err) {
     // res.status(400).send(err);
-    next(ORMhandler.errorHandler(err, res, req, next));
+    ORMhandler.errorHandler(err, res, req, next);
   }
 }
 
@@ -106,9 +106,20 @@ async function getAllCoursesTaughtByTeacher(req, res, next) {
     const courses = await courseService.getAllCoursesTaughtByTeacher(
       teacher_id
     );
+    console.log(courses[0]);
     res.status(200).json(courses);
   } catch (err) {
-    ORMhandler(err, res, req, next);
+    ORMhandler.errorHandler(err, res, req, next);
+  }
+}
+
+async function searchCourses(req, res, next) {
+  const search = req.params.search;
+  try {
+    const courses = await courseService.searchCourses(search);
+    res.status(200).json(courses);
+  } catch (err) {
+    ORMhandler.errorHandler(err, res, req, next);
   }
 }
 
@@ -120,4 +131,5 @@ module.exports = {
   removeDate,
   addCourseToTimeTable,
   getAllCoursesTaughtByTeacher,
+  searchCourses,
 };

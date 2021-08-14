@@ -19,6 +19,21 @@ class Session extends Model {
           to: "session.course_code",
         },
       },
+      feedback: {
+        relation: Model.HasManyRelation,
+        modelClass: require("./Feedback"),
+        join: {
+          from: "feedback.session_id",
+          to: "session.session_id",
+        },
+      },
+    };
+  }
+  static get modifiers() {
+    return {
+      defaultSelects(query) {
+        query.select("session_id", "session_date", "session_number");
+      },
     };
   }
 

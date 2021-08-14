@@ -14,4 +14,10 @@ router.get(
   parentController.getRelatedStudents
 );
 
+router.post(
+  "/registerCourse/:courseId",
+  authorize(role.PARENT, role.STUDENT),
+  parentController.registerStudentToCourse
+);
+
 module.exports = router;

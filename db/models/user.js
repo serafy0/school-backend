@@ -26,8 +26,8 @@ class User extends Model {
             from: "course_student.student_id",
             to: "course_student.course_code",
           },
+          to: "course.code",
         },
-        to: "course.code",
       },
 
       feedbacks: {
@@ -35,6 +35,14 @@ class User extends Model {
         modelClass: "/Feedback",
         from: "user.id",
         to: "feedback.student_id",
+      },
+    };
+  }
+
+  static get modifiers() {
+    return {
+      defaultSelects(query) {
+        query.select("id", "first_name", "last_name", "email");
       },
     };
   }

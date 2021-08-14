@@ -14,10 +14,6 @@ router.get("/verify/:token", authController.verifyByToken);
 router.post("/forgot_password/", authController.requestNewPassword);
 router.post("/forgot_password/:token", authController.SetPassword);
 
-//teacher signup and registration
-router.post("/teacher/login");
-router.post("/teacher/signup");
-
 //parent signup and registration
 router.post("/teacher/signup", authController.signupTeacher);
 router.post("/parent/signup", authController.signupParent);
