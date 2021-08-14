@@ -46,33 +46,42 @@ async function verifyUserByEmail(token) {
     .where("token", `${token}`);
   console.log(token);
   console.log(user);
-
-  // const user = await User.query().findOne("email", "=", email);
-
-  // const updateJennifer = await jennifer
-  //     .$query()
-  //     .patch({ firstName: 'J.', lastName: 'Lawrence' })
-  //     .returning('*');
 }
 const nodemailer = require("nodemailer");
 const config = require("../config");
-async function sendTokenByEmail(email, token) {
-  const transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
-    port: 587,
-    auth: {
-      user: config.email,
-      pass: config.pass,
-    },
-  });
+let transporter = nodemailer.createTransport({
+  port: config.port,
+});
 
-  let info = await transporter.sendMail({
-    from: '"Fred Foo 👻" <karine.green79@ethereal.email>', // sender address
-    to: email, // list of receivers
-    subject: "Hello ✔", // Subject line
-    text: `Hello, this is your registration token link ${token}`, // plain text body
-    html: `<b>Hello this is your registration token ${token}</b>`, // html body
+async function sendTokenByEmail(email, token) {
+  transporter.verify(function (error, success) {
+    if (error) {
+      console.log(error);
+    } else {
+      console.log("Server is ready to take our messages");
+    }
   });
+  console.log(config.email + " Sending Mail " + config.pass);
+
+  let info = await transporter.sendMail(
+    {
+      from: `"your school 👻" <${config.email}>`, // sender address
+      to: email, // list of receivers
+      subject: "Hello ✔", // Subject line
+      text: `Hello, this is your registration token link ${token}`, // plain text body
+      html: `<b>Hello this is your registration token ${token}</b>`, // html body
+    },
+
+    function (error) {
+      if (error) {
+        console.log("Error: " + error.message);
+        return;
+      } else {
+        console.log("message sent");
+        console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+      }
+    }
+  );
 }
 const crypto = require("crypto");
 async function setPasswordChangeToken(email) {
