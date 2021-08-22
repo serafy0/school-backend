@@ -13,21 +13,23 @@ async function createFeedback(req, res, next) {
     rating,
     session_id,
     course_code,
+    impulse_strategy,
     student_id,
   } = req.body;
 
   try {
-    const feedback = feedbackService.createFeedback(
+    const feedback = await feedbackService.createFeedback(
       feedback_text,
       rating,
+      impulse_strategy,
       session_id,
       course_code,
       student_id,
       written_by
     );
-    res.status(203).json(feedback);
+    res.status(200).json(feedback);
   } catch (err) {
-    ORMhandler(err, res, req, next);
+    ORMhandler.errorHandler(err, res, req, next);
   }
 }
 async function getFeedback(req, res, next) {}

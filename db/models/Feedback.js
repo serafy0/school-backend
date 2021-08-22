@@ -37,11 +37,28 @@ class Feedback extends Model {
   static get jsonSchema() {
     return {
       type: "object",
-      required: ["", "course_time"],
+      required: ["feedback_text", "rating"],
 
       properties: {
-        weekday: { type: "string" },
-        course_time: { type: "date" },
+        feedback_text: { type: "string" },
+        rating: { type: "integer" },
+        impulse_strategy: {
+          type: "string",
+          enum: ["angry", "happy", "sad", "none"],
+        },
+        session_id: {
+          type: "integer",
+        },
+        course_code: {
+          type: "string",
+        },
+        student_id: {
+          type: "string",
+        },
+        written_by: {
+          type: "string",
+        },
+        additionalProperties: false,
       },
     };
   }
