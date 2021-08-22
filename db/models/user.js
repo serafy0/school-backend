@@ -55,7 +55,7 @@ class User extends Model {
       properties: {
         first_name: { type: "string" },
         last_name: { type: "string" },
-        email: { type: "string" },
+        email: { type: "string", format: "email" },
         password: { type: "string" },
         role: { type: "string" },
         parent_id: "string",

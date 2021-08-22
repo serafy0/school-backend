@@ -32,7 +32,9 @@ class Session extends Model {
   static get modifiers() {
     return {
       defaultSelects(query) {
-        query.select("session_id", "session_date", "session_number");
+        query
+          .select("session_id", "session_date", "session_number")
+          .orderBy("session_date", "asc");
       },
     };
   }
@@ -44,7 +46,7 @@ class Session extends Model {
 
       properties: {
         course_code: { type: "string" },
-        session_date: { type: "string" },
+        session_date: { type: "string", format: "date-time" },
         session_number: { type: "integer" },
       },
     };
