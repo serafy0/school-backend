@@ -53,6 +53,14 @@ async function editFeedback(req, res, next) {
     ORMhandler.errorHandler(err, res, req, next);
   }
 }
-async function removeFeedback(req, res, next) {}
+async function removeFeedback(req, res, next) {
+  const { id } = req.params;
+  try {
+    const deletedFeedback = await feedbackService.deleteFeedback(id);
+    return res.sendStatus(200);
+  } catch (err) {
+    ORMhandler.errorHandler(err, res, req, next);
+  }
+}
 
 module.exports = { createFeedback, getFeedback, editFeedback, removeFeedback };
