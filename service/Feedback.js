@@ -29,7 +29,7 @@ async function createFeedback(
 async function editFeedback(editedFeedback, feedbackId) {
   const new_feedback = await Feedback.query()
     .patch(editedFeedback)
-    .where("id", feedbackCode)
+    .where("id", feedbackId)
     .returning("*")
     .first();
 }
