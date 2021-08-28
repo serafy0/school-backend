@@ -28,7 +28,15 @@ async function createFeedback(req, res, next) {
     ORMhandler.errorHandler(err, res, req, next);
   }
 }
-async function getFeedback(req, res, next) {}
+async function getFeedback(req, res, next) {
+  const { id } = req.params.id;
+  try {
+    const feedback = await feedbackService.getOneFeedback(id);
+    res.status(200).json(feedback);
+  } catch (err) {
+    ORMhandler.errorHandler(err, res, req, next);
+  }
+}
 async function editFeedback(req, res, next) {}
 async function removeFeedback(req, res, next) {}
 

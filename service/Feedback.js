@@ -1,5 +1,6 @@
 const Feedback = require("../db/models/Feedback");
 const { Course } = require("../db/models/course");
+const Session = require("../db/models/session");
 
 async function createFeedback(
   feedback_text,
@@ -42,8 +43,9 @@ async function deleteFeedback(id) {
   return deleted_feedback;
 }
 
-async function getOneFeedback() {}
-
+async function getOneFeedback(id) {
+  return Feedback.query().findById(id);
+}
 module.exports = {
   createFeedback,
   editFeedback,
