@@ -32,6 +32,7 @@ async function editFeedback(editedFeedback, feedbackId) {
     .where("id", feedbackId)
     .returning("*")
     .first();
+  return new_feedback;
 }
 
 async function deleteFeedback(id) {

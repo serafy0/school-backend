@@ -37,7 +37,22 @@ async function getFeedback(req, res, next) {
     ORMhandler.errorHandler(err, res, req, next);
   }
 }
-async function editFeedback(req, res, next) {}
+async function editFeedback(req, res, next) {
+  const { id } = req.params;
+
+  try {
+    const feedback = await feedbackService.getOneFeedback(id);
+    if (!feedback) {
+      return res.sendStatus(404);
+    }
+    //is it a bad idea to add the req.body directly and let the model's jsonSchema handle the validation ?
+    const editedFeedback = await feedbackService.editFeedback(req.body, id);
+
+    res.status(200).json(editedFeedback);
+  } catch (err) {
+    ORMhandler.errorHandler(err, res, req, next);
+  }
+}
 async function removeFeedback(req, res, next) {}
 
 module.exports = { createFeedback, getFeedback, editFeedback, removeFeedback };

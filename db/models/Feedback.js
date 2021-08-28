@@ -40,6 +40,7 @@ class Feedback extends Model {
       required: ["feedback_text", "rating"],
 
       properties: {
+        id: { type: "string", format: "uuid" },
         feedback_text: { type: "string" },
         rating: { type: "integer" },
         impulse_strategy: {
