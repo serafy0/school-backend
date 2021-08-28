@@ -39,7 +39,7 @@ async function deleteFeedback(id) {
     .where("id", id)
     .returning("*")
     .first();
-  return deleted_course;
+  return deleted_feedback;
 }
 
 async function getOneFeedback() {}
