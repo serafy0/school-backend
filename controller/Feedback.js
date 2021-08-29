@@ -45,6 +45,9 @@ async function editFeedback(req, res, next) {
     if (!feedback) {
       return res.sendStatus(404);
     }
+    if (feedback.written_by !== req.session.user.id) {
+      return res.sendStatus(403);
+    }
     //is it a bad idea to add the req.body directly and let the model's jsonSchema handle the validation ?
     const editedFeedback = await feedbackService.editFeedback(req.body, id);
 
@@ -56,6 +59,14 @@ async function editFeedback(req, res, next) {
 async function removeFeedback(req, res, next) {
   const { id } = req.params;
   try {
+    const feedback = await feedbackService.getOneFeedback(id);
+    if (!feedback) {
+      return res.sendStatus(404);
+    }
+    if (feedback.written_by !== req.session.user.id) {
+      return res.sendStatus(403);
+    }
+
     const deletedFeedback = await feedbackService.deleteFeedback(id);
     return res.sendStatus(200);
   } catch (err) {

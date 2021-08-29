@@ -8,7 +8,7 @@ const authorize = require("../authorization/authorize");
 
 router.post("/", authenticate, feedbackController.createFeedback);
 router.get("/:id", feedbackController.getFeedback);
-router.put("/:id", feedbackController.editFeedback);
-router.delete("/:id", feedbackController.removeFeedback);
+router.put("/:id", authenticate, feedbackController.editFeedback);
+router.delete("/:id", authenticate, feedbackController.removeFeedback);
 
 module.exports = router;
