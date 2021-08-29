@@ -1,10 +1,9 @@
-const sessionService = require("../service/sessoin");
+const sessionService = require("../service/session");
 
 const ORMhandler = require("../errors/orm-error-handler");
 
 async function createSession(req, res, next) {
   const { course_code, session_date } = req.body;
-
   try {
     const new_session = await sessionService.createSession(
       course_code,
