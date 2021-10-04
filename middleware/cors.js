@@ -1,6 +1,9 @@
 const cors = require("cors");
 const ApiError = require("../errors/api-errors");
-const whitelist = new Set(["http://example1.com", "http://localhost:3000"]);
+const whitelist = new Set([
+  "http://localhost:3000",
+  process.env.WHITELISTED_URL,
+]);
 //is set faster ??
 
 const corOptions = {
