@@ -24,16 +24,15 @@ module.exports = {
   production: {
     client: "postgresql",
     connection: {
-      url: process.env.DATABASE_URI
+      url: process.env.DATABASE_URL,
     },
     pool: {
       min: 2,
-      max: 10
+      max: 10,
     },
     migrations: {
       tableName: "knex_migrations",
     },
     // ...knexSnakeCaseMappers(),
-
   },
 };
