@@ -20,6 +20,20 @@ module.exports = {
     seeds: {
       directory: "./seeds",
     },
+  },
+  production: {
+    client: "postgresql",
+    connection: {
+      url: process.env.DATABASE_URI
+    },
+    pool: {
+      min: 2,
+      max: 10
+    },
+    migrations: {
+      tableName: "knex_migrations",
+    },
     // ...knexSnakeCaseMappers(),
+
   },
 };

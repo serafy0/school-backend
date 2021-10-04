@@ -4,6 +4,7 @@ const courseRouter = require("./routes/course");
 const sessionRouter = require("./routes/session");
 const feedRouter = require("./routes/Feedback");
 const parentRouter = require("./routes/parent");
+require("dotenv").config();
 
 const session = require("./middleware/session ");
 
@@ -15,10 +16,6 @@ dbSetup();
 
 const app = express();
 
-//if the app is running with a proxy like (nginx)
-//app.set('trust proxy',1)
-
-//
 app.use(express.json());
 
 //setup CORS login

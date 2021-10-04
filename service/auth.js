@@ -48,9 +48,8 @@ async function verifyUserByEmail(token) {
   console.log(user);
 }
 const nodemailer = require("nodemailer");
-const config = require("../config");
 let transporter = nodemailer.createTransport({
-  port: config.port,
+  port: process.env.EMAIL_PORT,
 });
 
 async function sendTokenByEmail(email, token) {
@@ -61,11 +60,10 @@ async function sendTokenByEmail(email, token) {
       console.log("Server is ready to take our messages");
     }
   });
-  console.log(config.email + " Sending Mail " + config.pass);
 
   let info = await transporter.sendMail(
     {
-      from: `"your school 👻" <${config.email}>`, // sender address
+      from: `"your school"`, // sender address
       to: email, // list of receivers
       subject: "Hello ✔", // Subject line
       text: `Hello, this is your registration token link ${token}`, // plain text body
@@ -75,7 +73,6 @@ async function sendTokenByEmail(email, token) {
     function (error) {
       if (error) {
         console.log("Error: " + error.message);
-        return;
       } else {
         console.log("message sent");
         console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
