@@ -33,4 +33,4 @@ app.use(router);
 
 app.use(apiErrorHandler);
 
-app.listen(8088, () => console.log("server is running on port 8080"));
+app.listen(process.env.PORT||8088, () => console.log("server is running on port 8080"));
