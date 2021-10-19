@@ -8,6 +8,7 @@ const authorize = require("../authorization/authorize");
 
 router.post("/", sessionController.createSession);
 router.get("/:id", sessionController.getOneSession);
+router.get("/students/:id/", sessionController.getOneSessionWithStudents);
 router.put("/:id", sessionController.editSession);
 router.delete("/:id", sessionController.deleteSession);
 

@@ -36,11 +36,23 @@ async function getOneSession(req, res, next) {
   const session_id = req.params.id;
   try {
     const session = await sessionService.getOneSession(session_id);
-    if (session > 0) {
-      res.status(200).json(session);
-    } else {
+    if (!session) {
       res.status(404).json({ message: "session not found" });
     }
+    res.status(200).json(session);
+  } catch (err) {
+    ORMhandler.errorHandler(err, res, req, next);
+  }
+}
+
+async function getOneSessionWithStudents(req, res, next) {
+  const session_id = req.params.id;
+  try {
+    const session = await sessionService.getOneSessionWithStudents(session_id);
+    if (!session) {
+      res.status(404).json({ message: "session not found" });
+    }
+    res.status(200).json(session);
   } catch (err) {
     ORMhandler.errorHandler(err, res, req, next);
   }
@@ -57,4 +69,10 @@ async function editSession(req, res, next) {
   }
 }
 
-module.exports = { createSession, deleteSession, getOneSession, editSession };
+module.exports = {
+  createSession,
+  deleteSession,
+  getOneSession,
+  editSession,
+  getOneSessionWithStudents,
+};

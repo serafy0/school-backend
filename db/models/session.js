@@ -34,6 +34,7 @@ class Session extends Model {
       defaultSelects(query) {
         query
           .select("session_id", "session_date", "session_number")
+          .withGraphFetched("feedback")
           .orderBy("session_date", "asc");
       },
     };

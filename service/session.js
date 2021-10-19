@@ -1,4 +1,5 @@
 const Session = require("../db/models/session");
+const { Course } = require("../db/models/course");
 
 async function createSession(course_code, session_date) {
   let new_session = null;
@@ -24,6 +25,15 @@ async function removeSession(session_id) {
 async function getOneSession(session_id) {
   return Session.query().findById(session_id);
 }
+async function getOneSessionWithStudents(session_id) {
+  const session = await Session.query()
+    .findById(session_id)
+    .withGraphFetched("[feedback]");
+  session.course = await Course.query()
+    .findById(session.course_code)
+    .withGraphFetched(" [registered_students(defaultSelects)]");
+  return session;
+}
 
 async function editSession(session_id, session_date) {
   return Session.query()
@@ -33,4 +43,10 @@ async function editSession(session_id, session_date) {
     .first();
 }
 
-module.exports = { createSession, removeSession, getOneSession, editSession };
+module.exports = {
+  createSession,
+  removeSession,
+  getOneSession,
+  editSession,
+  getOneSessionWithStudents,
+};
