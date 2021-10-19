@@ -44,6 +44,11 @@ class User extends Model {
       defaultSelects(query) {
         query.select("id", "first_name", "last_name", "email");
       },
+      selectWithFeedbacks(query) {
+        query
+          .select("id", "first_name", "last_name", "email")
+          .withGraphFetched("feedback");
+      },
     };
   }
 
