@@ -34,6 +34,22 @@ class Feedback extends Model {
     };
   }
 
+  static get modifiers() {
+    return {
+      defaultSelects(query) {
+        query
+          .select(
+            "id",
+            "feedback_text",
+            "rating",
+            "impulse_strategy",
+            "written_by"
+          )
+          .orderBy("session_date", "asc");
+      },
+    };
+  }
+
   static get jsonSchema() {
     return {
       type: "object",
@@ -53,9 +69,8 @@ class Feedback extends Model {
         course_code: {
           type: "string",
         },
-        student_id: {
-          type: "string",
-        },
+        student_id: { type: "string", format: "uuid" },
+
         written_by: {
           type: "string",
         },
