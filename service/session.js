@@ -28,10 +28,7 @@ async function getOneSession(session_id) {
 async function getOneSessionWithStudents(session_id) {
   const session = await Session.query()
     .findById(session_id)
-    .withGraphFetched("[feedback]");
-  session.course = await Course.query()
-    .findById(session.course_code)
-    .withGraphFetched(" [registered_students(defaultSelects)]");
+    .withGraphFetched("[course.[registered_students]]");
   return session;
 }
 
