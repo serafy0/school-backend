@@ -79,4 +79,4 @@ class Feedback extends Model {
     };
   }
 }
-module.exports = Feedback;
+module.exports = { Feedback };

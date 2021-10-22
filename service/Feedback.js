@@ -1,4 +1,4 @@
-const Feedback = require("../db/models/Feedback");
+const { Feedback } = require("../db/models/Feedback");
 const { Course } = require("../db/models/course");
 const Session = require("../db/models/session");
 
