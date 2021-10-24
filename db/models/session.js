@@ -10,6 +10,8 @@ class Session extends Model {
   }
 
   static get relationMappings() {
+    const { Course } = require("./course");
+    const { Feedback } = require("./Feedback");
     return {
       comments: {
         relation: Model.BelongsToOneRelation,
@@ -21,10 +23,18 @@ class Session extends Model {
       },
       feedback: {
         relation: Model.HasManyRelation,
-        modelClass: require("./Feedback"),
+        modelClass: Feedback,
         join: {
           from: "feedback.session_id",
           to: "session.session_id",
+        },
+      },
+      course: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: Course,
+        join: {
+          from: "session.course_code",
+          to: "course.code",
         },
       },
     };
