@@ -6,6 +6,8 @@ class User extends Model {
   }
 
   static get relationMappings() {
+    const { Feedback } = require("./Feedback");
+
     return {
       //student has one parent
       parent: {
@@ -32,9 +34,11 @@ class User extends Model {
 
       feedbacks: {
         relation: Model.HasManyRelation,
-        modelClass: "/Feedback",
-        from: "user.id",
-        to: "feedback.student_id",
+        modelClass: Feedback,
+        join: {
+          from: "feedback.student_id",
+          to: "user.id",
+        },
       },
     };
   }
@@ -45,9 +49,7 @@ class User extends Model {
         query.select("id", "first_name", "last_name", "email");
       },
       selectWithFeedbacks(query) {
-        query
-          .select("id", "first_name", "last_name", "email")
-          .withGraphFetched("feedback");
+        query.select("id", "first_name", "last_name");
       },
     };
   }
